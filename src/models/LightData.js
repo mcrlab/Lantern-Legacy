@@ -6,13 +6,12 @@ export default class LightData {
     if (!id) {
       throw new Error('LightData requires an ID');
     }
-    let animation = new Mix('FFFF00','00FF00');
+    let animation = new Mix('00FF00','0000FF');
     let animationData = animation.getData();
     this.id = id;
     this.status = status;
     this.lastSeen = new Date();
-    this.memory = 0;
-    this.color = 'FFFF00';
+    this.color = 'FF0000';
     this.loop = animationData.loop;
     this.fps = animationData.fps;
     this.data = animationData.data;

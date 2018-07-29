@@ -1,15 +1,14 @@
 import Animation from './Animation';
 const Color = require('color');
 
-const frameRate = 16;
-const numberOfFrames = 16;
+const frameRate = 64;
+const numberOfFrames = 64;
 
 export default class FadeOff extends Animation {
   constructor(color = 'FFFFFF'){
     super(color, numberOfFrames, frameRate);
     this.name = 'FadeOff';
     this.loop = 0;
-    this.fps = 16;
     this.constructAnimation();
   }
 

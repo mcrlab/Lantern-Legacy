@@ -35,16 +35,14 @@ export default class LightingController extends Observable {
   handleMessage(message) {
     const data = message.toString().split("|");
     const id = data[0];
-    const memory = data[1];
-    const status = parseInt(data[2]);
+    const status = parseInt(data[1]);
     if (!this.lights.has(id)) {
       this.registerNewLight(id);
     } else {
       const update = {
             lastSeen: new Date(),
-            memory: memory,
-          status: status
-        };
+            status: status
+          };
 
       this.refreshLight(id, update);
     }
