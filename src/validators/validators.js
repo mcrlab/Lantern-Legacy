@@ -17,17 +17,11 @@ export function lightDataValidator(input) {
     if(!Array.isArray(input.data)){
       throw new LightDataError(400, 'Animation data is not in the correct format');
     }
-    input.data.map((frame)=> {
-      if(!Array.isArray(frame)){
-        throw new LightDataError(400, 'Animation data is not in the correct format');
+    input.data.map((color)=> {
+      if (!pattern.test(color)) {
+        throw new LightDataError(400, color + ' is not a valid format');
       }
-      frame.map((bulbColor) => {
-        if (!pattern.test(bulbColor)) {
-          throw new LightDataError(400, bulbColor + ' is not a valid format');
-        }
-      });
     });
-
 
     response.data = input.data;
   }

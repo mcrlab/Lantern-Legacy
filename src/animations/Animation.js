@@ -1,6 +1,5 @@
 import ColorCompression from '../lib/ColorCompression';
 
-const NUMBER_OF_BULBS = 5;
 const NUMBER_OF_FRAMES = 8;
 const FRAMES_PER_SECOND = 8;
 const OFF = '000000';
@@ -14,6 +13,7 @@ export default class Animation {
     this.name = 'Animation';
     this.numberOfFrames = numberOfFrames;
     this.frameRate = frameRate;
+    this.loop = 1;
     this.defaultColor = defaultColor;
     this.data = this.constructDefaultAnimation();
   }
@@ -27,24 +27,23 @@ export default class Animation {
   }
 
   fillFrame(color = OFF) {
-    let frame = [];
-    for(let bulb = 0; bulb < NUMBER_OF_BULBS; bulb++){
-      frame[bulb] = color;
-    }
-    return frame;
+    return color;
   }
 
   getData() {
-    return this.data;
+    return {
+      "loop": this.loop,
+      "fps": this.frameRate,
+      "data":this.data,
+      "color": this.defaultColor
+    }
   }
 
   toString() {
     let output = [];
 
     this.data.map((frame)=> {
-      frame.map((bulbColor) => {
-        output.push(ColorCompression.compress(bulbColor));
-      });
+        output.push(ColorCompression.compress(frame));
     });
 
     const dataString = output.join('');

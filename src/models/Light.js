@@ -24,7 +24,6 @@ export default class Light {
         return object;
     }
 
-
     getId() {
         return this.lightData.id;
     }

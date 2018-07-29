@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "MQTT_HOST=localhost nodemon src/index.js --exec babel-node",
+    "dev": "nodemon src/index.js --exec babel-node",
     "server": "nodemon src/index.js --exec babel-node",
-    "build": "babel lib -d dist",
+    "build": "babel src -d dist",
     "serve": "node dist/index.js",
-    "test": "mocha ./src/**/*.spec.js --compilers js:babel-register",
+    "test": "mocha ./test/**/*.spec.js --compilers js:babel-register",
     "light": "node fake-light.js"
   },
   "author": "",
@@ -20,6 +20,7 @@
     "http": "0.0.0",
     "material-ui": "^0.18.7",
     "mqtt": "^2.9.0",
+    "npm": "6.2.0",
     "socket.io": "^2.0.3",
     "tinycolor2": "^1.4.1",
     "ws": "^3.0.0"
