@@ -2,7 +2,7 @@ import ColorCompression from '../lib/ColorCompression';
 
 const NUMBER_OF_FRAMES = 8;
 const FRAMES_PER_SECOND = 8;
-const OFF = '000000';
+const OFF = 'FFFFFF';
 
 export default class Animation {
   constructor(defaultColor = OFF,

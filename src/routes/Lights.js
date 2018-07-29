@@ -22,6 +22,31 @@ function createRoutes(lightingController) {
         }
     });
 
+    router.post('/on', (req, res) => {
+      try {
+        let color = colorValidator(req.body.color);
+        let animation = new FadeOn(color);
+        const validatedInput = animation.getData();
+        let response = lightingController.updateAllLights(validatedInput)
+        res.json(response);
+      } catch (error){
+        error.status =400;
+        res.status(error.status).json(error);
+      }
+    });
+
+    router.post('/off', (req, res) => {
+      try {
+        let color = colorValidator(req.body.color);
+        let animation = new FadeOff(color);
+        const validatedInput = animation.getData();
+        let response = lightingController.updateAllLights(validatedInput)
+        res.json(response);
+      } catch (error){
+        res.status(error.status).json(error);
+      }
+    });
+
 
     router.get('/:light', (req, res) => {
         try {
@@ -31,6 +56,8 @@ function createRoutes(lightingController) {
             res.status(error.status).json(error);
         }
     });
+
+
 
 
     router.post('/:light/raw', (req, res) => {
@@ -67,6 +94,8 @@ function createRoutes(lightingController) {
         res.status(error.status).json(error);
       }
     });
+
+
 
     return router;
 }
