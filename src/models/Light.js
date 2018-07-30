@@ -33,24 +33,9 @@ export default class Light {
     }
 
     getInstruction() {
-        let instruction = '';
-
-        switch(this.lightData.status){
-            case 1:
-                const lightData = this.getData();
-                instruction = LightInstruction.animate(lightData.data, lightData.fps, lightData.loop);
-                break;
-            case 2:
-                instruction = LightInstruction.pause();
-                break;
-            default:
-                instruction = LightInstruction.off();
-                break;
-        }
-
+        let instruction = LightInstruction.animate(lightData.data, lightData.fps, lightData.loop);
         return instruction;
     }
-
 
     getLastSeen() {
         return this.lightData.lastSeen;

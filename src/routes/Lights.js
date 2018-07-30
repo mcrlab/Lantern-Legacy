@@ -11,43 +11,6 @@ function createRoutes(lightingController) {
         res.json(response);
     });
 
-
-    router.post('/', (req, res) => {
-        try {
-            const validatedInput = lightDataValidator(req.body);
-            const response = lightingController.updateAllLights(validatedInput);
-            res.json(response);
-        } catch (error) {
-            res.status(error.status||500).json(error);
-        }
-    });
-
-    router.post('/on', (req, res) => {
-      try {
-        let color = colorValidator(req.body.color);
-        let animation = new FadeOn(color);
-        const validatedInput = animation.getData();
-        let response = lightingController.updateAllLights(validatedInput)
-        res.json(response);
-      } catch (error){
-        error.status =400;
-        res.status(error.status).json(error);
-      }
-    });
-
-    router.post('/off', (req, res) => {
-      try {
-        let color = colorValidator(req.body.color);
-        let animation = new FadeOff(color);
-        const validatedInput = animation.getData();
-        let response = lightingController.updateAllLights(validatedInput)
-        res.json(response);
-      } catch (error){
-        res.status(error.status).json(error);
-      }
-    });
-
-
     router.get('/:light', (req, res) => {
         try {
             const response = lightingController.getLightDataById(req.params.light);
@@ -56,9 +19,6 @@ function createRoutes(lightingController) {
             res.status(error.status).json(error);
         }
     });
-
-
-
 
     router.post('/:light/raw', (req, res) => {
         try {
@@ -73,24 +33,20 @@ function createRoutes(lightingController) {
     router.post('/:light/on', (req, res) => {
       try {
         let color = colorValidator(req.body.color);
-        let animation = new FadeOn(color);
-        const validatedInput = animation.getData();
-        let response = lightingController.updateLight(req.params.light, validatedInput)
+        let response = lightingController.updateLightColor(req.params.light, validatedInput)
         res.json(response);
       } catch (error){
-        error.status =400;
+        error.status = 400;
         res.status(error.status).json(error);
       }
     });
 
     router.post('/:light/off', (req, res) => {
       try {
-        let color = colorValidator(req.body.color);
-        let animation = new FadeOff(color);
-        const validatedInput = animation.getData();
-        let response = lightingController.updateLight(req.params.light, validatedInput)
+        let response = lightingController.updateLightColor(req.params.light, "000000")
         res.json(response);
-      } catch (error){
+      } catch (error) {
+        error.status = 400;
         res.status(error.status).json(error);
       }
     });

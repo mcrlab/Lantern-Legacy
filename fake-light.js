@@ -4,7 +4,7 @@ class Light {
   constructor(id = '12345') {
     this.connection = mqtt.connect(`mqtt://${process.env.MQTT_HOST}`);
     this.ID = id;
-    this.color = '';
+    this.color = '~  ';
     this.status = '0';
     this.timer = null;
 
@@ -16,16 +16,16 @@ class Light {
         console.log(this.ID, 'recieved instruction: ', `'${message.toString()}'`);
         const data = message.toString().split('|');
         switch(data[0]){
-            case 'ANIM':
+            case 'A':
               this.status = 1;
               break;
-            case 'STOP':
+            case 'S':
               this.status = 2;
               break;
-            case 'START':
+            case 'X':
               this.status = 1;
               break;
-            case 'OFF':
+            case 'O':
               this.status = 0;
               break;
         }
@@ -41,7 +41,7 @@ class Light {
 
   enable() {
     this.timer = setInterval(() => {
-      const message = `${this.ID}|888888|${this.status}`;
+      const message = `${this.ID}|${this.status}|${this.color}`;
       console.log(this.ID, "Light heartbeat", message);
       this.connection.publish('/connect', message);
     }, 5000);

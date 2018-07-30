@@ -13,24 +13,8 @@ function animate(data, frameRate = 1, loop = 1) {
   return instruction;
 }
 
-function off(){
-  return 'O|000000';
-}
-
-function pause(){
-  return 'X|000000';
-}
-
-function play(){
-  return 'P|000000';
-}
-
-
 const LightInstruction = {
-  "off" : off,
   "animate" : animate,
-  "pause" : pause,
-  "play": play
 };
 
 export default LightInstruction;

@@ -12,6 +12,14 @@ function toRGB(hexInput){
     return output;
 }
 
+function toHex(color){
+  let char = color.toString(16);
+  if(char.length == 1){
+    char = "0"+char;
+  }
+  return char.toUpperCase();
+}
+
 function toAscii(input) {
   const compressedInput = Math.floor(input / 2);
   let shiftedInput = compressedInput + 32;
@@ -22,6 +30,14 @@ function toAscii(input) {
 
   const character = String.fromCharCode(shiftedInput);
   return character;
+}
+
+function fromAscii(input){
+  let r = (input.charCodeAt(0) - 32) * 2;
+  let g = (input.charCodeAt(1) - 32) * 2;
+  let b = (input.charCodeAt(2) - 32) * 2;
+
+  return [r,g,b];
 }
 
 const ColorCompression = {
@@ -37,6 +53,13 @@ const ColorCompression = {
 
     return output.join('');
   },
+  decompress: (compressedInput) => {
+    const colors = fromAscii(compressedInput);
+    let output = colors.map((color)=> {
+      return toHex(color);
+    });
+    return output.join('');
+  }
 
 };
 

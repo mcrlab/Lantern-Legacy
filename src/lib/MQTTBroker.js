@@ -1,6 +1,6 @@
 import mqtt from 'mqtt';
 
-export default class LightBroker {
+export default class MQTTBroker {
 
   init(callback) {
     this.client = mqtt.connect(`mqtt://${process.env.MQTT_HOST}`);

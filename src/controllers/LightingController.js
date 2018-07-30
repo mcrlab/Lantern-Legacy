@@ -1,20 +1,13 @@
 import Light from '../models/Light';
-import Observable from '../lib/Observable';
+import ColorCompression from '../lib/ColorCompression';
 import LightNotFoundError from '../exceptions/LightNotFoundError';
-
-import {
-    SERVER_ADD_LIGHT,
-    SERVER_ALL_LIGHTS,
-    SERVER_REMOVE_LIGHT,
-    SERVER_UPDATE_LIGHT
-} from '../actions';
+import FadeTo from '../animations/FadeTo';
 
 const MAX_LIGHT_NO_COMMUNICATION = 15000;
 const TIME_BETWEEN_CLEANUPS = 1000;
 
-export default class LightingController extends Observable {
+export default class LightingController {
   constructor(lightBroker) {
-    super();
     this.lights = new Map();
     this.lightBroker = lightBroker;
 
@@ -35,15 +28,14 @@ export default class LightingController extends Observable {
   handleMessage(message) {
     const data = message.toString().split("|");
     const id = data[0];
-    const status = parseInt(data[1]);
+    const color = ColorCompression.decompress(data[1]);
     if (!this.lights.has(id)) {
       this.registerNewLight(id);
     } else {
       const update = {
             lastSeen: new Date(),
-            status: status
+            color: color
           };
-
       this.refreshLight(id, update);
     }
   }
@@ -59,11 +51,10 @@ export default class LightingController extends Observable {
   registerNewLight(id) {
     const newLight = new Light(id, this.lightBroker);
     this.lights.set(id, newLight);
-    this.emit(SERVER_ADD_LIGHT, newLight.getData());
     this.updateLight(id, { status: 1});
   }
 
-    getLights() {
+  getLights() {
     return this.lights;
   }
 
@@ -76,26 +67,30 @@ export default class LightingController extends Observable {
 
   removeLight(id){
     this.lights.delete(id);
-    this.emit(SERVER_REMOVE_LIGHT, id);
   }
 
-  updateRandomLight(update) {
-      const index  = Math.floor(Math.random() * this.lights.size)
-      const key = Array.from(this.lights.keys())[index];
-      let light = this.lights.get(key);
-      light.update(update);
-      const data = light.getData()
-      this.emit(SERVER_UPDATE_LIGHT, data);
-      this.lightBroker.publish(light.getAddress(), light.getInstruction());
-      return this.getAllLightsData();
+
+  updateLightColor(id, color){
+      const light = this.lights.get(id);
+      if(light) {
+          let lightData = light.getData()
+          const animation = new FadeTo(lightData.color, color);
+          const update = animation.getData();
+          light.update(update);
+          data = light.getData()
+          this.lightBroker.publish(light.getAddress(), light.getInstruction());
+          return data;
+      } else {
+          throw new LightNotFoundError();
+      }
   }
+
 
   updateLight(id, update){
       const light = this.lights.get(id);
       if(light) {
           light.update(update);
           const data = light.getData()
-          this.emit(SERVER_UPDATE_LIGHT, data);
           this.lightBroker.publish(light.getAddress(), light.getInstruction());
           return data;
       } else {
@@ -108,7 +103,6 @@ export default class LightingController extends Observable {
       if(light) {
           light.update(update);
           const data = light.getData()
-          this.emit(SERVER_UPDATE_LIGHT, data);
       } else {
           throw new LightNotFoundError();
       }
@@ -120,7 +114,6 @@ export default class LightingController extends Observable {
           this.lightBroker.publish(light.getAddress(), light.getInstruction());
       });
       const data = this.getAllLightsData();
-      this.emit(SERVER_ALL_LIGHTS, data);
       return data;
   }
 
