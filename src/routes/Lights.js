@@ -1,7 +1,5 @@
 import express from 'express';
 import { lightDataValidator, colorValidator } from '../validators/validators';
-import FadeOn from '../animations/FadeOn';
-import FadeOff from '../animations/FadeOff';
 
 function createRoutes(lightingController) {
     const router = express.Router();
@@ -33,9 +31,10 @@ function createRoutes(lightingController) {
     router.post('/:light/on', (req, res) => {
       try {
         let color = colorValidator(req.body.color);
-        let response = lightingController.updateLightColor(req.params.light, validatedInput)
+        let response = lightingController.updateLightColor(req.params.light, color)
         res.json(response);
       } catch (error){
+        console.log(error);
         error.status = 400;
         res.status(error.status).json(error);
       }
@@ -46,12 +45,11 @@ function createRoutes(lightingController) {
         let response = lightingController.updateLightColor(req.params.light, "000000")
         res.json(response);
       } catch (error) {
+        console.log(error);
         error.status = 400;
         res.status(error.status).json(error);
       }
     });
-
-
 
     return router;
 }

@@ -18,6 +18,7 @@ class Light {
         switch(data[0]){
             case 'A':
               this.status = 1;
+              this.color = message.toString().slice(-3);
               break;
             case 'S':
               this.status = 2;
@@ -50,4 +51,3 @@ class Light {
 }
 
 new Light('12345');
-new Light('54321');

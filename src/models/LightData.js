@@ -1,4 +1,3 @@
-
 import FadeTo from '../animations/FadeTo';
 
 export default class LightData {
@@ -6,7 +5,7 @@ export default class LightData {
     if (!id) {
       throw new Error('LightData requires an ID');
     }
-    let animation = new FadeTo('00FF00','0000FF');
+    let animation = new FadeTo('000000','0000FF');
     let animationData = animation.getData();
     this.id = id;
     this.status = status;

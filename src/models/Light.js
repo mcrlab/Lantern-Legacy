@@ -16,6 +16,7 @@ export default class Light {
             new LightData(this.getId()),
             this.lightData,
             update);
+        return this.getData(); 
     }
 
 
@@ -33,9 +34,15 @@ export default class Light {
     }
 
     getInstruction() {
-        let instruction = LightInstruction.animate(lightData.data, lightData.fps, lightData.loop);
+        let instruction = '';
+
+        const lightData = this.getData();
+        instruction = LightInstruction.animate(lightData.data, lightData.fps, lightData.loop);
+
+
         return instruction;
     }
+
 
     getLastSeen() {
         return this.lightData.lastSeen;

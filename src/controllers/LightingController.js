@@ -28,12 +28,14 @@ export default class LightingController {
   handleMessage(message) {
     const data = message.toString().split("|");
     const id = data[0];
-    const color = ColorCompression.decompress(data[1]);
+    const status = data[1];
+    const color = ColorCompression.decompress(data[2]);
     if (!this.lights.has(id)) {
       this.registerNewLight(id);
     } else {
       const update = {
             lastSeen: new Date(),
+            status: status,
             color: color
           };
       this.refreshLight(id, update);
@@ -73,11 +75,10 @@ export default class LightingController {
   updateLightColor(id, color){
       const light = this.lights.get(id);
       if(light) {
-          let lightData = light.getData()
+          let lightData = light.getData();
           const animation = new FadeTo(lightData.color, color);
           const update = animation.getData();
-          light.update(update);
-          data = light.getData()
+          let data = light.update(update);
           this.lightBroker.publish(light.getAddress(), light.getInstruction());
           return data;
       } else {
@@ -89,8 +90,7 @@ export default class LightingController {
   updateLight(id, update){
       const light = this.lights.get(id);
       if(light) {
-          light.update(update);
-          const data = light.getData()
+          const data = light.update(update);
           this.lightBroker.publish(light.getAddress(), light.getInstruction());
           return data;
       } else {

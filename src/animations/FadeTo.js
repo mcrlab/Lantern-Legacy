@@ -13,7 +13,6 @@ export default class FadeTo extends Animation {
     this.constructAnimation();
   }
 
-
   constructAnimation(){
     this.data = [];
 
@@ -21,7 +20,7 @@ export default class FadeTo extends Animation {
       let color = Color('#'+this.fadeFrom).mix(Color('#'+this.fadeTo), i/numberOfFrames).hex();
       this.data.push(this.fillFrame(color.replace('#','')));
     }
-
+    this.data.push(this.fillFrame(this.fadeTo));
   }
 
 }
