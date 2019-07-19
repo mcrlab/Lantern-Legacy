@@ -22,7 +22,6 @@ function errorHandler (err, req, res, next) {
     res.send({ error: 'Something failed!' })
 }
 
-
 const createApplication = (lightController) => {
   const app = express();
   app.use(express.static('public'));
